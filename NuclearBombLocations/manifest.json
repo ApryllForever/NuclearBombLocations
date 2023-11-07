@@ -1,0 +1,21 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "ApryllForever.NuclearBombLocations",
+  "Name": "NuclearBombLocations",
+  "Author": "ApryllForever",
+  "Version": "1.0.0",
+  "Description": "Adds Clairabelle Lagoon.",
+  "MinimumApiVersion": "3.16.0",
+  "EntryDll": "NuclearBombLocations.dll",
+  
+  "UpdateKeys": [
+    "Nexus:"
+  ]
+}
