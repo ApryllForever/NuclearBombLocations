@@ -319,7 +319,7 @@ namespace NuclearBombLocations
 			currentMermaidAnimation = mermaidIdle;
 		}
 
-		static string EnterDungeon = "Extreme Danger lurks beyond this gate!!! Proceed?";
+		static string NuclearShopDialogue = "Hey they love! what may I do for you today?";
 
 		public void cannonFire()
         {
@@ -334,9 +334,10 @@ namespace NuclearBombLocations
 			TemporaryAnimatedSprite sprite = new TemporaryAnimatedSprite();
 			GameLocation location = new GameLocation();
 			GameTime time = new GameTime();
-			if (action == "RS.VolcanoEntrance")
+			if (action == "NuclearShop")
 			{
-				createQuestionDialogue(EnterDungeon, createYesNoResponses(), "SapphireVolcanoEntrance");
+				//createQuestionDialogue(NuclearShopDialogue, createYesNoResponses(), "SapphireVolcanoEntrance");
+				carpentersk(tileLocation);
 			}
 
 			if (action == "RS.RCannon")
@@ -493,6 +494,55 @@ namespace NuclearBombLocations
 				return base.performAction(action, who, tileLocation);
         }
 
+
+
+        public bool carpentersk(Location tileLocation)
+        {
+            foreach (NPC i in this.characters)
+            {
+                if (!i.Name.Equals("MermaidRangerAnabelle"))
+                {
+                    continue;
+                }
+               // if (Vector2.Distance(i.Tile, new Vector2(tileLocation.X, tileLocation.Y)) > 3f)
+                //{
+                 //   return false;
+               // }
+                //i.faceDirection(2);
+                if ( !Game1.IsThereABuildingUnderConstruction())
+                {
+                    List<Response> options;
+                    options = new List<Response>();
+                    options.Add(new Response("Shop", Game1.content.LoadString("Strings\\Locations:Anabelle_Shop")));
+                   
+                    options.Add(new Response("Construct", Game1.content.LoadString("Strings\\Locations:Anabelle_Construct")));
+                    options.Add(new Response("Leave", Game1.content.LoadString("Strings\\Locations:ScienceHouse_CarpenterMenu_Leave")));
+                    this.createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:Anabelle_Greeting"), options.ToArray(), "Anabelle");
+                }
+                else
+                {
+                    Utility.OpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
+                }
+                return true;
+            }
+			/*
+            if (this.getCharacterFromName("Robin") == null && Game1.IsVisitingIslandToday("Robin"))
+            {
+                Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:ScienceHouse_MoneyBox"));
+                Game1.afterDialogues = delegate
+                {
+                    Utility.OpenShopMenu("Carpenter", (string)null);
+                };
+                return true;
+            } */
+           
+            return false;
+        }
+
+
+
+
+
         public override bool answerDialogue(Response answer)
         {
 
@@ -502,13 +552,20 @@ namespace NuclearBombLocations
 				string qa = lastQuestionKey.Split(' ')[0] + "_" + answer.responseKey;
 				switch (qa)
 				{
-					case "SapphireVolcanoEntrance_Yes":
-						//performTouchAction("MagicWarp " + SapphireVolcano.BaseLocationName + "1 0 0", Game1.player.Position);
-						return true;
-				}
+					
+
+                    case "Anabelle_Construct":
+                        this.ShowConstructOptions("MermaidRangerAnabelle");
+                        break;
+
+                    case "Anabelle_Shop":
+                        Game1.player.forceCanMove();
+                        Utility.OpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
+                        break;
+                }
 			}
 
-            return base.answerDialogue(answer);
+                return base.answerDialogue(answer);
         }
         
         public override bool SeedsIgnoreSeasonsHere()

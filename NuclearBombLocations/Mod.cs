@@ -56,9 +56,72 @@ namespace NuclearBombLocations
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
+            harmony.Patch(
+             original: AccessTools.Method(typeof(StardewValley.Menus.CarpenterMenu), nameof(StardewValley.Menus.CarpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild)),
+             postfix: new HarmonyMethod(typeof(Mod), nameof(Mod.ReturnMenu_Prefix))
+          );
+
             harmony.PatchAll();
 
         }
+
+
+        private static void ReturnMenu_Prefix( )
+        {
+            // Not our place, we don't care
+            if (Game1.player.currentLocation is not ClairabelleLagoon)
+            {
+                return;
+            }
+            else
+            {
+
+                LocationRequest locationRequest = Game1.getLocationRequest("Custom_ClairabelleLagoon");
+                locationRequest.OnWarp += delegate
+                {
+                    Game1.displayHUD = true;
+                    Game1.player.viewingLocation.Value = null;
+                    Game1.viewportFreeze = false;
+                    Game1.viewport.Location = new Location(320, 1536);
+                   // __instance.freeze = true;                                   will need reflection, is private
+                    Game1.displayFarmer = true;
+                    AnabelleConstructionMessage();
+                };
+                Game1.warpFarmer(locationRequest, Game1.player.TilePoint.X, Game1.player.TilePoint.Y, Game1.player.FacingDirection);
+
+            }
+            
+        }
+
+
+        public static void AnabelleConstructionMessage()
+        {
+            CarpenterMenu menu = new("MermaidRangerAnabelle");
+
+            menu.exitThisMenu();
+
+
+
+            Game1.player.forceCanMove();
+           
+
+            string text = "Strings\\StringsFromCSFiles:ItemDeliveryQuest.cs.13285";
+          
+
+            string text2 = "Your work will begin tomorrow!!";
+           
+
+            //string[] array = ArgUtility.SplitBySpace(Blueprint.DisplayName);
+            string text3 = "Your work will begin tomorrow!!!";
+           
+            
+
+            Game1.DrawDialogue(Game1.getCharacterFromName("MermaidRangerAnabelle"), text);
+        }
+
+
+
+
 
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
