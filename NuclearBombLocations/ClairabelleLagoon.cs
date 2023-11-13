@@ -521,7 +521,7 @@ namespace NuclearBombLocations
                 }
                 else
                 {
-                    Utility.OpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
+                    Utility.TryOpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
                 }
                 return true;
             }
@@ -560,7 +560,7 @@ namespace NuclearBombLocations
 
                     case "Anabelle_Shop":
                         Game1.player.forceCanMove();
-                        Utility.OpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
+                        Utility.TryOpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
                         break;
                 }
 			}

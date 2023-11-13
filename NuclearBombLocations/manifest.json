@@ -14,7 +14,13 @@
   "Description": "Adds Clairabelle Lagoon.",
   "MinimumApiVersion": "3.16.0",
   "EntryDll": "NuclearBombLocations.dll",
-  
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+
+  ],
+
   "UpdateKeys": [
     "Nexus:"
   ]

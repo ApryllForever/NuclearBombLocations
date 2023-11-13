@@ -77,5 +77,24 @@ namespace NuclearBombLocations
 
 
 
+[HarmonyPatch(typeof(GameLocation), nameof(GameLocation.UpdateWhenCurrentLocation))]
+public static class Game1UpdateDungeonLocationsPatch
+{
+    public static void Postfix(SlimeTent __instance, GameTime time)
+    {
+        //if (Game1.menuUp && !Game1.IsMultiplayer)
+        //{
+        //return;
+        //}
+        if (Game1.IsClient)
+        {
+            return;
+        }
+        //MermaidTrain mermaidTrain = new MermaidTrain();
+        //mermaidTrain.Update(time);
 
+        //SlimeTent.UpdateWhenCurrentLocation();
+
+    }
+}
 
