@@ -58,6 +58,7 @@ namespace NuclearBombLocations
 
             Helper.Events.Content.AssetRequested += OnAssetRequested;
 
+            //Helper.Events.GameLoop.DayEnding += OnDayEnding;
 
             // Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
@@ -145,9 +146,11 @@ namespace NuclearBombLocations
 
             sc.RegisterSerializerType(typeof(ClairabelleLagoon));
 
+            sc.RegisterSerializerType(typeof(MermaidDugoutHouse));
+
             sc.RegisterSerializerType(typeof(SlimeTent));
 
-           // sc.RegisterCustomProperty(typeof(Building), "necklaceItem", typeof(NetRef<Item>), AccessTools.Method(typeof(Farmer_Necklace), nameof(Farmer_Necklace.get_necklaceItem)), AccessTools.Method(typeof(Farmer_Necklace), nameof(Farmer_Necklace.set_necklaceItem)));
+            //sc.RegisterCustomProperty(typeof(Building), "[XmlInclude(typeof(SlimeTent))]", typeof(NetRef<SlimeTent>), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.get_SlimeTent)), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.set_SlimeTent)));
 
         }
 
@@ -159,6 +162,7 @@ namespace NuclearBombLocations
             {
                 Game1.locations.Add(new ClairabelleLagoon(Helper.ModContent));
                 Game1.locations.Add(new SlimeTent(Helper.ModContent));
+                Game1.locations.Add(new MermaidDugoutHouse(Helper.ModContent));
             }
 
         }

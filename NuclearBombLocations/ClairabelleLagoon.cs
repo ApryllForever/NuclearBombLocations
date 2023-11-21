@@ -20,9 +20,7 @@ using StardewValley.Locations;
 using Object = StardewValley.Object;
 using StardewValley.GameData;
 using StardewValley.Menus;
-
-
-
+using StardewValley.Extensions;
 
 namespace NuclearBombLocations
 {
@@ -227,7 +225,75 @@ namespace NuclearBombLocations
 				}
 			}
 
-			/*
+            var v1 = new Vector2(53);
+            var v2 = new Vector2(22);
+            var v3 = new Vector2(34);
+            var v4 = new Vector2(67);
+            var v5 = new Vector2(76);
+            var v6 = new Vector2(51);
+            addCritter(new Crow((int)v1.X, (int)v2.Y));
+            addCritter(new Crow((int)v3.X, (int)v4.Y));
+            addCritter(new Crow((int)v5.X, (int)v6.Y));
+
+            addCritter(new Crow(57, 20));
+            addCritter(new Crow(74, 26));
+            addCritter(new Crow(69, 26));
+            addCritter(new Crow(40, 9));
+
+            addCritter(new Crow(67, 39));
+            addCritter(new Crow(52, 41));
+            addCritter(new Crow(46, 55));
+            addCritter(new Crow(63, 55));
+            addCritter(new Crow(42, 61));
+            addCritter(new Crow(42, 43));
+
+            addCritter(new Crow(6, 13));
+            addCritter(new Crow(11, 7));
+
+            addCritter(new CrabCritter(new Vector2(48f, 5f) * 64f));
+            addCritter(new CrabCritter(new Vector2(47f, 6f) * 64f));
+            addCritter(new CrabCritter(new Vector2(76f, 5f) * 64f));
+
+            addCritter(new CrabCritter(new Vector2(47f, 16f) * 64f));
+            addCritter(new CrabCritter(new Vector2(47f, 28f) * 64f));
+            addCritter(new CrabCritter(new Vector2(45f, 34f) * 64f));
+            addCritter(new CrabCritter(new Vector2(41f, 45f) * 64f));
+            addCritter(new CrabCritter(new Vector2(53f, 46f) * 64f));
+            addCritter(new CrabCritter(new Vector2(55f, 72f) * 64f));
+            addCritter(new CrabCritter(new Vector2(41f, 53f) * 64f));
+            addCritter(new CrabCritter(new Vector2(30f, 56f) * 64f));
+
+            addCritter(new CrabCritter(new Vector2(33f, 4f) * 64f));
+            addCritter(new CrabCritter(new Vector2(34f, 4f) * 64f));
+            addCritter(new CrabCritter(new Vector2(32f, 3f) * 64f));
+            addCritter(new CrabCritter(new Vector2(33f, 5f) * 64f));
+
+            addCritter(new CrabCritter(new Vector2(9f, 3f) * 64f));
+            addCritter(new CrabCritter(new Vector2(13f, 12f) * 64f));
+            addCritter(new CrabCritter(new Vector2(5f, 15f) * 64f));
+            addCritter(new CrabCritter(new Vector2(9f, 18f) * 64f));
+
+            addCritter(new CrabCritter(new Vector2(25f, 9f) * 64f));
+            addCritter(new CrabCritter(new Vector2(27f, 12f) * 64f));
+            addCritter(new CrabCritter(new Vector2(19f, 24f) * 64f));
+            addCritter(new CrabCritter(new Vector2(18f, 27f) * 64f));
+            addCritter(new CrabCritter(new Vector2(15f, 26f) * 64f));
+            addCritter(new CrabCritter(new Vector2(17f, 19f) * 64f));
+
+			addCritter(new CrabCritter(new Vector2(25f, 38f) * 64f));
+            addCritter(new CrabCritter(new Vector2(24f, 32f) * 64f));
+            addCritter(new CrabCritter(new Vector2(13f, 41f) * 64f));
+            addCritter(new CrabCritter(new Vector2(8f, 49f) * 64f));
+            addCritter(new CrabCritter(new Vector2(15f, 55f) * 64f));
+            addCritter(new CrabCritter(new Vector2(19f, 61f) * 64f));
+
+			addJumperFrog(new Vector2(42, 16));
+            addJumperFrog(new Vector2(42, 32));
+            addJumperFrog(new Vector2(45, 1));
+            addJumperFrog(new Vector2(27, 55));
+
+			//addBirdiesHere(1);
+            /*
 			{
 				Point offset = new Point(0, 0); 
 				Vector2 vector_offset = new Vector2(offset.X, offset.Y);
@@ -265,21 +331,165 @@ namespace NuclearBombLocations
 				Game1.currentLightSources.Add(new LightSource(4, (new Vector2(34f, 120f) + vector_offset) * 64f, 1f, LightSource.LightContext.None, 0L));
 			}  */
 
-		}
+        }
 
 		public override void TransferDataFromSavedLocation(GameLocation l)
 		{
 			base.TransferDataFromSavedLocation(l);
 		}
-		public override void DayUpdate(int dayOfMonth)
-		{
-			
-			base.DayUpdate(dayOfMonth);
-		}
-		
 
 
-      
+        public void addBirdiesHere(double chance, bool onlyIfOnScreen = false)
+        {
+            if (Game1.timeOfDay >= 2500 )
+            {
+                return;
+            }
+            Season season = GetSeason();
+
+            while (Game1.random.NextDouble() < chance)
+            {
+                int num = Game1.random.Next(1, 4);
+                bool flag = false;
+                int num2 = 0;
+                while (!flag && num2 < 5)
+                {
+                    Vector2 randomTile = getRandomTile();
+                    if (!onlyIfOnScreen || !Utility.isOnScreen(randomTile * 64f, 64))
+                    {
+                        Microsoft.Xna.Framework.Rectangle area = new Microsoft.Xna.Framework.Rectangle((int)randomTile.X - 2, (int)randomTile.Y - 2, 5, 5);
+                        if (isAreaClear(area))
+                        {
+                            List<Critter> list = new List<Critter>();
+                            int startingIndex =  25;
+                           
+
+                            for (int i = 0; i < num; i++)
+                            {
+                                list.Add(new Birdie(-100, -100, startingIndex));
+                            }
+
+                            addCrittersStartingAtTile(randomTile, list);
+                            flag = true;
+                        }
+                    }
+
+                    num2++;
+                }
+            }
+        }
+
+
+
+
+        private void addCrittersStartingAtTile(Vector2 tile, List<Critter> crittersToAdd)
+        {
+            if (crittersToAdd == null)
+            {
+                return;
+            }
+
+            int num = 0;
+            HashSet<Vector2> hashSet = new HashSet<Vector2>();
+            while (crittersToAdd.Count > 0 && num < 20)
+            {
+                if (hashSet.Contains(tile))
+                {
+                    tile = Utility.getTranslatedVector2(tile, Game1.random.Next(4), 1f);
+                }
+                else
+                {
+                    if (CanItemBePlacedHere(tile))
+                    {
+                        Critter critter = crittersToAdd.Last();
+                        critter.position = tile * 64f;
+                        critter.startingPosition = tile * 64f;
+                        critters.Add(critter);
+                        crittersToAdd.RemoveAt(crittersToAdd.Count - 1);
+                    }
+
+                    tile = Utility.getTranslatedVector2(tile, Game1.random.Next(4), 1f);
+                    hashSet.Add(tile);
+                }
+
+                num++;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+        public override void DayUpdate(int dayOfMonth)
+        {
+            base.DayUpdate(dayOfMonth);
+            Microsoft.Xna.Framework.Rectangle tidePools;
+            tidePools = new Microsoft.Xna.Framework.Rectangle(0, 0, 47, 63);
+            float chance;
+            chance = 1f;
+            while (Game1.random.NextDouble() < (double)chance)
+            {
+                string id;
+                id = ((Game1.random.NextDouble() < 0.2) ? "(O)372" : "(O)394");
+                Vector2 position;
+                position = new Vector2(Game1.random.Next(tidePools.X, tidePools.Right), Game1.random.Next(tidePools.Y, tidePools.Bottom));
+                if (this.CanItemBePlacedHere(position))
+                {
+                    this.dropObject(ItemRegistry.Create<Object>(id), position * 64f, Game1.viewport, initialPlacement: true);
+                }
+                chance /= 2f;
+            }
+            Microsoft.Xna.Framework.Rectangle seaweedShore;
+            seaweedShore = new Microsoft.Xna.Framework.Rectangle(6, 2, 22, 60);
+            chance = 0.25f;
+            while (Game1.random.NextDouble() < (double)chance)
+            {
+                if (Game1.random.NextDouble() < 0.15)
+                {
+                    Vector2 position2;
+                    position2 = new Vector2(Game1.random.Next(seaweedShore.X, seaweedShore.Right), Game1.random.Next(seaweedShore.Y, seaweedShore.Bottom));
+                    if (this.CanItemBePlacedHere(position2))
+                    {
+                        this.dropObject(ItemRegistry.Create<Object>("(O)152"), position2 * 64f, Game1.viewport, initialPlacement: true);
+                    }
+                }
+                chance /= 2f;
+            }
+           // if (!base.IsSummerHere() || Game1.dayOfMonth < 12 || Game1.dayOfMonth > 14)
+           // {
+           //     return;
+           // }
+            for (int i = 0; i < 11; i++)
+            {
+                this.spawnObjects();
+            }
+            chance = 1.5f;
+            while (Game1.random.NextDouble() < (double)chance)
+            {
+                string id2;
+                id2 = ((Game1.random.NextDouble() < 0.2) ? "(O)392" : "(O)393");
+                Vector2 position3;
+                position3 = base.getRandomTile();
+                position3.Y /= 2f;
+                string prop;
+                prop = this.doesTileHaveProperty((int)position3.X, (int)position3.Y, "Type", "Back");
+                if (this.CanItemBePlacedHere(position3) && (prop == null || !prop.Equals("Wood")))
+                {
+                    this.dropObject(ItemRegistry.Create<Object>(id2), position3 * 64f, Game1.viewport, initialPlacement: true);
+                }
+                chance /= 1.1f;
+            }
+        }
+
+
+
+
 
         public override void updateEvenIfFarmerIsntHere(GameTime time, bool skipWasUpdatedFlush = false)
 		{
@@ -633,12 +843,39 @@ namespace NuclearBombLocations
 			{
 				addMoonlightJellies(50, new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame - 24917), new Microsoft.Xna.Framework.Rectangle(0, 0, 0, 0));
 			}
-		}
+
+           // double num = map.Layers[0].LayerWidth * map.Layers[0].LayerHeight;
+           // double chance2;
+            //double chance;
+            //double num2 = (chance2 = (chance = Math.Max(0.15, Math.Min(0.5, num / 15000.0))));
+
+			double groovery = .4;
 
 
-       
+            double chance3 = groovery / 2.0;
+            double chance4 = groovery / 2.0;
+            double chance5 = groovery ;
+            //double num3 = num2 * 2.0;
 
-		public override void UpdateWhenCurrentLocation(GameTime time)
+            if (critters.Count <= 200)
+            {
+                
+                
+                addBunnies(chance3, onlyIfOnScreen);
+                addSquirrels(chance4, onlyIfOnScreen);
+                addWoodpecker(chance5, onlyIfOnScreen = false);
+                if (Game1.isDarkOut() && Game1.random.NextDouble() < 0.01)
+                {
+                    addOwl();
+                }
+            }
+
+        }
+
+
+
+
+        public override void UpdateWhenCurrentLocation(GameTime time)
 		{
 			GameLocation location = new GameLocation();
 			base.UpdateWhenCurrentLocation(time);

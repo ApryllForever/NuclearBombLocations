@@ -8,12 +8,21 @@ using StardewValley.Monsters;
 using StardewValley.Tools;
 using StardewValley;
 using StardewModdingAPI;
+using SpaceShared;
+using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NuclearBombLocations
 {
+   // [XmlInclude(typeof(SlimeTent))]
     [XmlType("Mods_ApryllForever_NuclearBombLocations_SlimeTent")]
     public class SlimeTent : NuclearLocation
 	{
+
 		[XmlElement("slimeTentMatingsLeft")]
 		public readonly NetInt slimeTentMatingsLeft = new NetInt();
 
@@ -29,8 +38,23 @@ namespace NuclearBombLocations
         : base(content, "SlimeTentInside", "SlimeTentInside")
         {
 		}
+       // internal class Holder { public readonly NetRef<GameLocation> Value = new(); }
 
-		protected override void initNetFields()
+
+        //internal static ConditionalWeakTable<Building, Holder> values = new();
+       // public static NetRef<GameLocation> get_SlimeTent(SlimeTent tent, Building building)
+		//{
+         //   var holder = values.GetOrCreateValue(building);
+         //   return holder.Value;
+       // }
+       // public static void set_SlimeTent(SlimeTent tent, IEquatable<GameLocation> newVal)
+       // {
+            // We don't actually want a setter for this one, since it should be readonly
+            // Net types are weird
+            // Or do we? Serialization
+       // }
+
+        protected override void initNetFields()
 		{
 			base.initNetFields();
 			base.NetFields.AddField(this.slimeTentMatingsLeft, "slimeTentMatingsLeft").AddField(this.waterSpots, "waterSpots");

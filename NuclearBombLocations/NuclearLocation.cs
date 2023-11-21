@@ -289,8 +289,28 @@ namespace NuclearBombLocations
                     layer.Tiles[tx, ty - 1] = null;
                     layer.Tiles[tx, ty - 2] = null;
                     Game1.playSound("doorCreak");
-                    DelayedAction.playSoundAfterDelay("treethud", 1000);
+                    //DelayedAction.playSoundAfterDelay("treethud", 1000);
                 }
+            }
+
+            else if (action == "NoKey.Marisol")
+            {
+
+                if (Game1.player.friendshipData.TryGetValue("MermaidRangerMarisol", out var friendship) && friendship.Points >= 1000)
+                {
+                    layer.Tiles[tx, ty] = null;
+                    layer.Tiles[tx, ty - 1] = null;
+                    layer.Tiles[tx, ty - 2] = null;
+                    Game1.playSound("doorCreak");
+                    //DelayedAction.playSoundAfterDelay("treethud", 1000);
+                }
+                else
+                {
+                    Game1.drawDialogueNoTyping(Game1.content.LoadString("Strings\\StringsFromCSFiles:Marisol.Door"));
+
+                   
+                }
+
             }
 
             else if (action == "HugeDoor")
