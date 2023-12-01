@@ -48,6 +48,10 @@ namespace NuclearBombLocations
 
         private int swimShadowFrame;
 
+        public static string SwimQuestion = "Do you want to swim with Marisol?";
+
+
+
         internal static IModHelper ModHelper { get; set; }
 
 
@@ -129,7 +133,43 @@ namespace NuclearBombLocations
            
         }
 
-      
+        public override bool checkAction(Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
+        {
+
+            if (Game1.player.eventsSeen.Contains("NuclearMarisol4Heart"))
+            {
+                switch (base.getTileIndexAt(tileLocation, "Buildings"))
+                {
+                    case 1120:
+
+                        createQuestionDialogue(SwimQuestion, createYesNoResponses(), "MariSwim");
+
+                        return true;
+                }
+            }
+
+            return base.checkAction(tileLocation, viewport, who);
+        }
+
+
+        public override bool answerDialogue(Response answer)
+        {
+            if (lastQuestionKey != null && afterQuestion == null)
+            {
+                string qa = lastQuestionKey.Split(' ')[0] + "_" + answer.responseKey;
+                switch (qa)
+                {
+                    case "MariSwim_Yes":
+
+                        Event MariSwimEvent = new Event((Game1.content.LoadString("Data\\Events\\Custom_MermaidDugoutHouse:MarisolCaveSwimEvent", ArgUtility.EscapeQuotes(Game1.player.Name))));
+                        this.startEvent(MariSwimEvent);
+
+                        return true;
+                }
+            }
+
+            return base.answerDialogue(answer);
+        }
 
         public override bool performAction(string action, Farmer who, Location tileLocation)
         {

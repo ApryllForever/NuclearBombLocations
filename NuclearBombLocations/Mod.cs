@@ -60,7 +60,7 @@ namespace NuclearBombLocations
 
             //Helper.Events.GameLoop.DayEnding += OnDayEnding;
 
-            // Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+             Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
 
             var harmony = new Harmony(ModManifest.UniqueID);
@@ -71,6 +71,8 @@ namespace NuclearBombLocations
           );
 
             harmony.PatchAll();
+
+            HarmonyPatch_UntimedSpecialOrders.ApplyPatch(harmony, helper, Monitor);
 
         }
 
@@ -287,58 +289,18 @@ namespace NuclearBombLocations
 
         }
 
-        /*
+        
         private void OnUpdateTicked(object sender, EventArgs e)
             {
 
-
-                if (Game1.gameMode == 3 && Game1.player.currentLocation is ClairabelleLagoon)
-                {
-                   
-                    Vector2 playerTile;
-                    playerTile = Game1.player.Tile;
-                    if (Game1.player.currentLocation.lastTouchActionLocation.Equals(Vector2.Zero))
-                    {
-                        string touchActionProperty;
-                        touchActionProperty = Game1.player.currentLocation.doesTileHaveProperty((int)playerTile.X, (int)playerTile.Y, "TouchAction", "Back");
-                        Game1.player.currentLocation.lastTouchActionLocation = playerTile;
-                        if (touchActionProperty != null)
-                        {
-                            Game1.player.currentLocation.performTouchAction(touchActionProperty, playerTile);
-                        }
-                    }
-                    else if (!Game1.player.currentLocation.lastTouchActionLocation.Equals(playerTile))
-                    {
-                        Game1.player.currentLocation.lastTouchActionLocation = Vector2.Zero;
-                    }
-                    foreach (Farmer farmer in Game1.player.currentLocation.farmers)
-                    {
-                        Vector2 playerPos;
-                        playerPos = farmer.Tile;
-                        Vector2[] adjacentTilesOffsets;
-                        adjacentTilesOffsets = Character.AdjacentTilesOffsets;
-                        foreach (Vector2 offset in adjacentTilesOffsets)
-                        {
-                            Vector2 v;
-                            v = playerPos + offset;
-                        //if (Game1.player.currentLocation.objects.TryGetValue(v, out var obj))
-                        //{
-                        // obj.farmerAdjacentAction();
-
-                        foreach (SerializableDictionary<Vector2, Object> foobar in Game1.player.currentLocation.objects)
-                        {
-                            farmerAdjacentAction(Game1.player.currentLocation);
-                       }
+           
 
 
-                            ;
 
-                           // }
-                        }
-                    }
-                }
 
-            }*/
+
+
+            }
 
 
 
