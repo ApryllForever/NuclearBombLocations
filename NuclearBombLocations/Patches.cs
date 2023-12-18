@@ -9,6 +9,9 @@ using StardewValley.Enchantments;
 using System;
 using NuclearBombLocations;
 using StardewModdingAPI;
+using StardewValley.BellsAndWhistles;
+using StardewValley.Events;
+using StardewValley.Characters;
 
 namespace NuclearBombLocations
 
@@ -48,7 +51,98 @@ namespace NuclearBombLocations
             }
         }
     }
+    /*
+    [HarmonyPatch(typeof(NPC), nameof(NPC.isGaySpouse))]
+    public static class GayNPCPatch
+    {
+        public static void NPC__isGaySpouse__Prefix(
+                  StardewValley.NPC __instance,
+                  ref bool __result)
+        {
 
+            if (!__instance.Name.Equals("MermaidRangerMarisol"))
+                return;
+
+            if (__instance.Name.Equals("MermaidRangerMarisol") && Game1.player.isMale
+                    )
+            {
+                __result = true;
+            }
+            else if
+                (__instance.Name.Equals("MermaidRangerMarisol") && !Game1.player.isMale
+                    )
+            {
+                __result = false;
+            }
+        }
+    }   
+    */
+
+    
+    [HarmonyPatch(typeof(QuestionEvent), nameof(QuestionEvent.setUp))]
+    public static class QuestionEventCPatch
+    {
+        public static bool QuestionEvent_setUp_Prefix(int ___whichQuestion, ref bool __result)
+        {
+            if (___whichQuestion == 1)
+            {
+                if (Game1.player.spouse.Equals("MermaidRangerMarisol"))
+                {
+                    __result = true;
+                    return false;
+                }
+                Response[] answers = new Response[]
+                {
+                    new Response("Yes", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_Yes")),
+                    new Response("Not", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_No"))
+                };
+
+                if (!Game1.player.isMale)
+                {
+                    Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\Events:HavePlayerBabyQuestion"), answers, new GameLocation.afterQuestionBehavior(ModEntry.answerPregnancyQuestion));
+                }
+                else
+                {
+                    Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\Events:HavePlayerBabyQuestion_Adoption" ), answers, new GameLocation.afterQuestionBehavior(ModEntry.answerPregnancyQuestion));
+                }
+                Game1.messagePause = true;
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+    }
+    
+
+
+
+
+    [HarmonyPatch(typeof(BirthingEvent), nameof(BirthingEvent.setUp))]
+    public static class BirthingEventSetup
+    {
+        public static bool BirthingEvent_setUp_Prefix(ref bool ___isMale, ref string ___message, ref bool __result)
+        {
+
+            if (!Game1.player.spouse.Equals("MermaidRangerMarisol"))
+                return false;
+
+           
+            Game1.player.CanMove = false;
+            ___isMale = false;
+            if (Game1.player.isMale)
+            {
+                ___message = Game1.content.LoadString("Strings\\Events:BirthMessage_Adoption", Lexicon.getGenderedChildTerm(___isMale));
+            }
+            else 
+            {
+                ___message = Game1.content.LoadString("Strings\\Events:BirthMessage_PlayerMother", Lexicon.getGenderedChildTerm(___isMale));
+            }
+           
+            __result = false;
+            return false;
+        }
+    }
 
 
     [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.UpdateWhenCurrentLocation))]

@@ -31,10 +31,11 @@ using StardewValley.Buildings;
 using StardewValley.GameData.Buildings;
 using SpaceCore.UI;
 using StardewValley.Tools;
+using StardewValley.Events;
 
 namespace NuclearBombLocations
 {
-    public class Mod : StardewModdingAPI.Mod
+    public partial class Mod : StardewModdingAPI.Mod
     {
 
         public static Mod instance;
@@ -45,7 +46,7 @@ namespace NuclearBombLocations
 
         private readonly string PublicAssetBasePath = "Mods/SlimeTent";
 
-
+       // public static Random myRand;
 
         public override void Entry(IModHelper helper)
         {
@@ -70,11 +71,58 @@ namespace NuclearBombLocations
              postfix: new HarmonyMethod(typeof(Mod), nameof(Mod.ReturnMenu_Prefix))
           );
 
+            harmony.Patch(
+           original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.isGaySpouse)),
+           prefix: new HarmonyMethod(typeof(Mod), nameof(Mod.NPC__isGaySpouse__Postfix))
+        );
+            /*
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Utility), nameof(Utility.pickPersonalFarmEvent)),
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Utility_pickPersonalFarmEvent_Prefix))
+            );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(QuestionEvent), nameof(QuestionEvent.setUp)),
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.QuestionEvent_setUp_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(BirthingEvent), nameof(BirthingEvent.setUp)),
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.BirthingEvent_setUp_Prefix))
+            );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(BirthingEvent), nameof(BirthingEvent.tickUpdate)),
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.BirthingEvent_tickUpdate_Prefix))
+            );  */
+
+
+
             harmony.PatchAll();
 
             HarmonyPatch_UntimedSpecialOrders.ApplyPatch(harmony, helper, Monitor);
 
         }
+
+
+        public static bool NPC__isGaySpouse__Postfix(StardewValley.NPC __instance, ref bool __result)
+        {
+            if (!__instance.Name.Equals("MermaidRangerMarisol"))
+                return true;
+
+            Farmer spouse = __instance.getSpouse();
+            if (spouse.IsMale)
+                __result = true;
+
+            else if (spouse != null)
+                __result = false;
+
+           
+			return false;
+
+        }
+
+
 
 
         private static void ReturnMenu_Prefix( )
@@ -152,6 +200,10 @@ namespace NuclearBombLocations
 
             sc.RegisterSerializerType(typeof(SlimeTent));
 
+            sc.RegisterSerializerType(typeof(NuclearSubmarinePen));
+
+            sc.RegisterSerializerType(typeof(MermaidNuclearSub));
+
             //sc.RegisterCustomProperty(typeof(Building), "[XmlInclude(typeof(SlimeTent))]", typeof(NetRef<SlimeTent>), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.get_SlimeTent)), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.set_SlimeTent)));
 
         }
@@ -165,6 +217,8 @@ namespace NuclearBombLocations
                 Game1.locations.Add(new ClairabelleLagoon(Helper.ModContent));
                 Game1.locations.Add(new SlimeTent(Helper.ModContent));
                 Game1.locations.Add(new MermaidDugoutHouse(Helper.ModContent));
+                Game1.locations.Add(new NuclearSubmarinePen(Helper.ModContent));
+                Game1.locations.Add(new MermaidNuclearSub(Helper.ModContent));
             }
 
         }
@@ -226,17 +280,6 @@ namespace NuclearBombLocations
                 });
             }
            */
-
-
-
-
-
-
-
-
-
-
-
             //if (e.NameWithoutLocale.IsEquivalentTo("Maps/Custom_SlimeTentInside"))
            // {
                 
@@ -254,11 +297,6 @@ namespace NuclearBombLocations
                 //I would check out how Tractor Mod handles replacing the whole horse thing with Tractor thing, and that having a reference to the slimetent Building instance would give you the GameLocation instance that you can then mess with, though if you want to do netfield schenigans then you are in harmony patch land anyway
               //  the mapPath variable on GameLocation instance would be the Maps\\{ IndoorMap}
                // value which you can use to only modify Slime Tents but not Slime Hutches
-
-
-
-
-
 
                 //editor.PatchMap(sourceMap, targetArea: new Microsoft.Xna.Framework.Rectangle(30, 10, 20, 20));
          //   });
