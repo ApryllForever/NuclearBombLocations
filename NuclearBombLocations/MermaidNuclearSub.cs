@@ -127,7 +127,7 @@ namespace NuclearBombLocations
                 }
                 return true;
             }
-            if (base.getTileIndexAt(tileLocation, "Buildings") == 941) //Exit to Ocean Mountain Top
+            if (base.getTileIndexAt(tileLocation, "Buildings") == 425) //Exit to Ocean Mountain Top
             {
                 if (this.doneUntilReset)
                 {
@@ -177,13 +177,16 @@ namespace NuclearBombLocations
 			}
 			if (questionAndAnswer == "MermaidNuclearSubmarineLeaveQuestion_Yes")
 			{
+                performTouchAction("Warp " + "Custom_NuclearSubmarinePen 28 19", Game1.player.Tile);
+            }
+            if (questionAndAnswer == "AtarraExit_Yes")
+            {
+                performTouchAction("Warp " + "Custom_AtarraMountainTop 36 10", Game1.player.Tile);
+            }
 
-			}
 
 
-
-
-                return base.answerDialogueAction(questionAndAnswer, questionParams);
+            return base.answerDialogueAction(questionAndAnswer, questionParams);
 		}
 
 		private void changeSubmergeLight(bool red, bool clear = false)
@@ -339,6 +342,7 @@ namespace NuclearBombLocations
 				Game1.playSound("submarine_landing");
 				base.temporarySprites.Add(new TemporaryAnimatedSprite
 				{
+					/*
 					texture = this.submarineSprites,
 					sourceRectStartingPos = new Vector2(457f, 11f),
 					sourceRect = new Microsoft.Xna.Framework.Rectangle(457, 11, 14, 18),
@@ -346,7 +350,7 @@ namespace NuclearBombLocations
 					animationLength = 3,
 					pingPong = true,
 					position = new Vector2(21f, 143f) * 4f,
-					scale = 4f
+					scale = 4f*/
 				});
 				if (Game1.IsMasterGame)
 				{
@@ -382,7 +386,7 @@ namespace NuclearBombLocations
 					this.curtainMovement = 0.0002f;
 					Game1.changeMusicTrack("none");
 					Game1.playSound("submarine_landing");
-					Game1.background.tempSprites.Add(new TemporaryAnimatedSprite
+					Game1.background.tempSprites.Add(new TemporaryAnimatedSprite    // THIS IS THE PLANTS BACKGROUND!!!
 					{
 						motion = new Vector2(0f, -1f),
 						yStopCoordinate = 120,
@@ -390,10 +394,10 @@ namespace NuclearBombLocations
 						sourceRect = new Microsoft.Xna.Framework.Rectangle(257, 98, 182, 25),
 						animationLength = 1,
 						interval = 999999f,
-						position = new Vector2(148f, 56f) * 4f,
+						position = new Vector2(148f, 66f) * 4f,
 						scale = 4f
 					});
-					Game1.background.tempSprites.Add(new TemporaryAnimatedSprite
+					Game1.background.tempSprites.Add(new TemporaryAnimatedSprite  //another plants bg
 					{
 						motion = new Vector2(0f, -1f),
 						yStopCoordinate = 460,
@@ -509,9 +513,9 @@ namespace NuclearBombLocations
 						scale = 4f
 					});
 				}
-				if (Game1.random.NextDouble() < 0.0009)
+				if (Game1.random.NextDouble() < 0.0001)
 				{
-					Vector2 pos2;
+                    Vector2 pos2;
 					pos2 = new Vector2(13f, 5f) * 64f;
 					Game1.background.tempSprites.Add(new TemporaryAnimatedSprite
 					{
@@ -535,7 +539,59 @@ namespace NuclearBombLocations
 						scale = 4f
 					});
 				}
-				if (Game1.random.NextDouble() < 0.00035)
+                if (Game1.random.NextDouble() < 0.0003)
+                {
+                    Vector2 pos2;
+                    pos2 = new Vector2(10f, 5f) * 64f;
+                    Game1.background.tempSprites.Add(new TemporaryAnimatedSprite
+                    {
+                        // THE MERMAID SPRITE
+
+                        motion = new Vector2(-0f, -1f),
+                        color = new Color(0, 50, 150),
+                        yStopCoordinate = 64,
+                        texture = this.submarineSprites,
+                        sourceRectStartingPos = new Vector2(67f, 189f),
+                        sourceRect = new Microsoft.Xna.Framework.Rectangle(67, 189, 24, 53),
+                        totalNumberOfLoops = 50,
+                        animationLength = 3,
+                        pingPong = true,
+                        interval = 192f,
+                        xPeriodic = true,
+                        xPeriodicLoopTime = 3500f,
+                        xPeriodicRange = 12f,
+                        initialPosition = pos2,
+                        position = pos2,
+                        scale = 4f
+                    });
+                }
+                if (Game1.random.NextDouble() < 0.0003)
+                {
+                    Vector2 pos2;
+                    pos2 = new Vector2(19f, 5f) * 64f;
+                    Game1.background.tempSprites.Add(new TemporaryAnimatedSprite
+                    {
+                        // THE MERMAID SPRITE
+
+                        motion = new Vector2(-0f, -1f),
+                        color = new Color(0, 50, 150),
+                        yStopCoordinate = 64,
+                        texture = this.submarineSprites,
+                        sourceRectStartingPos = new Vector2(67f, 189f),
+                        sourceRect = new Microsoft.Xna.Framework.Rectangle(67, 189, 24, 53),
+                        totalNumberOfLoops = 50,
+                        animationLength = 3,
+                        pingPong = true,
+                        interval = 192f,
+                        xPeriodic = true,
+                        xPeriodicLoopTime = 3500f,
+                        xPeriodicRange = 12f,
+                        initialPosition = pos2,
+                        position = pos2,
+                        scale = 4f
+                    });
+                }
+                if (Game1.random.NextDouble() < 0.00035)
 				{
 					Vector2 pos;
 					pos = new Vector2(24f, 2f) * 64f;

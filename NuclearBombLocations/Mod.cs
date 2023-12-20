@@ -204,6 +204,8 @@ namespace NuclearBombLocations
 
             sc.RegisterSerializerType(typeof(MermaidNuclearSub));
 
+            sc.RegisterSerializerType(typeof(AtarraMountainTop));
+
             //sc.RegisterCustomProperty(typeof(Building), "[XmlInclude(typeof(SlimeTent))]", typeof(NetRef<SlimeTent>), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.get_SlimeTent)), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.set_SlimeTent)));
 
         }
@@ -219,6 +221,7 @@ namespace NuclearBombLocations
                 Game1.locations.Add(new MermaidDugoutHouse(Helper.ModContent));
                 Game1.locations.Add(new NuclearSubmarinePen(Helper.ModContent));
                 Game1.locations.Add(new MermaidNuclearSub(Helper.ModContent));
+                Game1.locations.Add(new AtarraMountainTop(Helper.ModContent));
             }
 
         }

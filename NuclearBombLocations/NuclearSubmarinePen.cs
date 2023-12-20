@@ -161,7 +161,7 @@ namespace NuclearBombLocations
                 switch (qa)
                 {
                     case "EnterSub_Yes":
-                        performTouchAction("MagicWarp " + "Custom_MermaidNuclearSub 8 8", Game1.player.Tile);
+                        performTouchAction("Warp " + "Custom_MermaidNuclearSub 8 8", Game1.player.Tile);
                         return true;
 
 

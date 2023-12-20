@@ -93,6 +93,7 @@ namespace NuclearBombLocations
         protected override void resetLocalState()
         {
             base.resetLocalState();
+            /*
             if (!this.map.Properties.TryGetValue("Music", out var musicValue) || musicValue == null)
             {
                 Game1.changeMusicTrack("woodsTheme");
@@ -111,7 +112,7 @@ namespace NuclearBombLocations
                 {
                     Game1.changeMusicTrack(split2[0]);
                 }
-            }
+            }*/
 
         }
 
