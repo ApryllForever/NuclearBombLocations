@@ -204,6 +204,12 @@ namespace NuclearBombLocations
             base.performTouchAction(actionStr, tileLocation);
         }
 
+        public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
+        {
+            base.drawAboveAlwaysFrontLayer(b);
+            
+        }
+
         public override void UpdateWhenCurrentLocation(GameTime time)
         {
             base.UpdateWhenCurrentLocation(time);

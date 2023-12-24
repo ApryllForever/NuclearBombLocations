@@ -22,13 +22,16 @@ using StardewValley.GameData;
 using StardewValley.Menus;
 using StardewValley.Extensions;
 using StardewValley.Monsters;
+using System.Drawing;
 
 namespace NuclearBombLocations
 {
     [XmlType("Mods_ApryllForever_NuclearBombLocations_AtarraMountainTop")]
     public class AtarraMountainTop : NuclearLocation
     {
-		static IModHelper Helper;
+        private Texture2D submarineSprites;
+
+        static IModHelper Helper;
 
 		public static IMonitor Monitor;
 
@@ -221,8 +224,8 @@ namespace NuclearBombLocations
 			//this.seasonOverride = "spring";
 			base.resetLocalState();
 
-          
-                Game1.changeMusicTrack("junimoKart_whaleMusic");
+            this.submarineSprites = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\temporary_sprites_1");
+            Game1.changeMusicTrack("junimoKart_whaleMusic");
 
             mermaidSprites = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\temporary_sprites_1");
 
@@ -237,7 +240,7 @@ namespace NuclearBombLocations
 
 		
 			{
-				Point offset = new Point(0, 0); 
+				Microsoft.Xna.Framework.Point offset = new Microsoft.Xna.Framework.Point(0, 0); 
 				Vector2 vector_offset = new Vector2(offset.X, offset.Y);
 			
 				Game1.currentLightSources.Add(new LightSource(4, (new Vector2(33f, 10f) + vector_offset) * 64f, 1f, LightSource.LightContext.None, 0L));
@@ -270,7 +273,7 @@ namespace NuclearBombLocations
             rand = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnArea;
             spawnArea = new Microsoft.Xna.Framework.Rectangle(4, 10, 50, 40);
-            for (int tries = 60; tries > 0; tries--)
+            for (int tries = 40; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea, rand);
@@ -305,7 +308,7 @@ namespace NuclearBombLocations
             rando = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnAreaa;
             spawnAreaa = new Microsoft.Xna.Framework.Rectangle(18, 25, 12, 10);
-            for (int tries = 20; tries > 0; tries--)
+            for (int tries = 6; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnAreaa, rando);
@@ -314,6 +317,7 @@ namespace NuclearBombLocations
                     {
                         Ghost a;
                         a = new Ghost(tile * 64f);
+                        a.focusedOnFarmers = false;
                         base.characters.Add(a);
                         //return;
                     } 
@@ -333,7 +337,7 @@ namespace NuclearBombLocations
             rand1 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnArea1;
             spawnArea1 = new Microsoft.Xna.Framework.Rectangle(18, 25, 12, 10);
-            for (int tries = 20; tries > 0; tries--)
+            for (int tries = 8; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea1, rand1);
@@ -343,6 +347,7 @@ namespace NuclearBombLocations
 
                         Ghost a;
                         a = new Ghost(tile * 64f, "Carbon Ghost");
+                        a.focusedOnFarmers = false;
                         base.characters.Add(a);
                     }
                 }
@@ -361,7 +366,7 @@ namespace NuclearBombLocations
             rand2 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnArea2;
             spawnArea2 = new Microsoft.Xna.Framework.Rectangle(18, 25, 12, 10);
-            for (int tries = 20; tries > 0; tries--)
+            for (int tries = 10; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea2, rand2);
@@ -371,6 +376,7 @@ namespace NuclearBombLocations
 
                         Ghost a;
                         a = new Ghost(tile * 64f, "Putrid Ghost");
+						a.focusedOnFarmers = false;
                         base.characters.Add(a);
                     }
                 }
@@ -386,7 +392,7 @@ namespace NuclearBombLocations
             rand2 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
            
             spawnArea2 = new Microsoft.Xna.Framework.Rectangle(18, 25, 12, 10);
-            for (int tries = 27; tries > 0; tries--)
+            for (int tries = 37; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea2, rand2);
@@ -609,9 +615,59 @@ namespace NuclearBombLocations
 			}
 		}
 
-	
 
-		public void mermaidDanceShow()
+        public override void performTenMinuteUpdate(int timeOfDay)
+        {
+            base.performTenMinuteUpdate(timeOfDay);
+            if (!(Game1.random.NextDouble() < 0.3))
+            {
+                return;
+            }
+            int numsprites;
+            numsprites = 0;
+            foreach (NPC character in base.characters)
+            {
+                if (character is Serpent)
+                {
+                    numsprites++;
+                }
+            }
+            if (numsprites < base.farmers.Count * 13)
+            {
+                this.spawnFlyingMonsterOffScreen();
+            }
+        }
+
+        public void spawnFlyingMonsterOffScreen()
+        {
+            Vector2 spawnLocation;
+            spawnLocation = Vector2.Zero;
+            switch (Game1.random.Next(4))
+            {
+                case 0:
+                    spawnLocation.X = Game1.random.Next(base.map.Layers[0].LayerWidth);
+                    break;
+                case 3:
+                    spawnLocation.Y = Game1.random.Next(base.map.Layers[0].LayerHeight);
+                    break;
+                case 1:
+                    spawnLocation.X = base.map.Layers[0].LayerWidth - 1;
+                    spawnLocation.Y = Game1.random.Next(base.map.Layers[0].LayerHeight);
+                    break;
+                case 2:
+                    spawnLocation.Y = base.map.Layers[0].LayerHeight - 1;
+                    spawnLocation.X = Game1.random.Next(base.map.Layers[0].LayerWidth);
+                    break;
+            }
+            base.playSound("serpentDie");
+            base.characters.Add(new Serpent(spawnLocation)
+            {
+                focusedOnFarmers = true
+            });
+        }
+
+
+        public void mermaidDanceShow()
         {
 			string mermaidDanceSpeech = "Fiona: Hey Lovelies! Thanks for coming to my performance!!!";
 			Game1.drawObjectDialogue(mermaidDanceSpeech);
@@ -658,7 +714,7 @@ namespace NuclearBombLocations
 				Game1.player.jitterStrength = 8f;
 				
 				Game1.drawObjectDialogue(mermaidDanceSpeech2);
-				Game1.screenOverlayTempSprites.AddRange(Utility.sparkleWithinArea(new Microsoft.Xna.Framework.Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), 500, Color.White, 10, 2000));
+				Game1.screenOverlayTempSprites.AddRange(Utility.sparkleWithinArea(new Microsoft.Xna.Framework.Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), 500, Microsoft.Xna.Framework.Color.White, 10, 2000));
 				DelayedAction.playSoundAfterDelay("gusviolin", 2500);
 				Game1.player.freezePause = 500;
 				Game1.pauseTime = 60f;
@@ -676,7 +732,7 @@ namespace NuclearBombLocations
 				Game1.freezeControls = true;
 				DelayedAction.playSoundAfterDelay("dwop", 300);
 				DelayedAction.playSoundAfterDelay("dwop", 1000);
-				Game1.screenOverlayTempSprites.AddRange(Utility.sparkleWithinArea(new Microsoft.Xna.Framework.Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), 500, Color.White, 10, 2000));
+				Game1.screenOverlayTempSprites.AddRange(Utility.sparkleWithinArea(new Microsoft.Xna.Framework.Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height), 500, Microsoft.Xna.Framework.Color.White, 10, 2000));
 				currentMermaidAnimation = mermaidIdle;
 				Game1.createItemDebris (ItemRegistry.Create("(O)638"), new Vector2(32f, 33f) * 64f, 0, this, 0);
 				Game1.freezeControls = false;
@@ -748,12 +804,84 @@ namespace NuclearBombLocations
 			{
 				suspensionBridge.Update(time);
 			}
-			
-			bool should_wave = false; 
+            /*
+            if (Game1.random.NextDouble() < 0.9)
+            {
+                Vector2 pos5;
+                pos5 = new Vector2(Game1.random.Next(12, base.map.DisplayWidth - 64), ( 64 * 60));
+                int which3;
+                which3 = Game1.random.Next(3);
+                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite
+                {
+                    motion = new Vector2(0f, (-3f + (float)which3)),
+                    yStopCoordinate = (60 * 64),
+                    texture = this.submarineSprites,
+                    sourceRect = new Microsoft.Xna.Framework.Rectangle(132 + which3 * 8, 20, 8, 8),
+                    xPeriodic = true,
+                    xPeriodicLoopTime = 1500f,
+                    xPeriodicRange = 12f,
+                    initialPosition = pos5,
+                    animationLength = 1,
+                    interval = 5000f,
+                    position = pos5,
+                    scale = 4f,
+                    
+                    
+                });
+            }
+
+
+            if (Game1.random.NextDouble() < 0.9)
+            {
+                Vector2 pos4;
+                pos4 = new Vector2(Game1.random.Next(36, base.map.DisplayWidth - 256), (64 * 60));
+                int which3;
+                which3 = Game1.random.Next(3);
+                this.temporarySprites.Add(new TemporaryAnimatedSprite
+                {
+                    motion = new Vector2(0f, (-3f + (float)which3)),
+                    yStopCoordinate = (60 * 64),
+                    texture = this.submarineSprites,
+                    sourceRect = new Microsoft.Xna.Framework.Rectangle(132 + which3 * 8, 20, 8, 8),
+                    xPeriodic = true,
+                    xPeriodicLoopTime = 1500f,
+                    xPeriodicRange = 12f,
+                    initialPosition = pos4,
+                    animationLength = 1,
+                    interval = 18000f,
+                    position = pos4,
+                    scale = 4f
+                });
+            } */
+
+            if (Game1.random.NextDouble() < 0.5)
+            {
+                Vector2 pos4;
+                pos4 = new Vector2(Game1.random.Next(0, base.map.DisplayWidth - 64), 3800f);
+                int which2;
+                which2 = Game1.random.Next(3);
+                this.temporarySprites.Add(new TemporaryAnimatedSprite
+                {
+                    motion = new Vector2(0f, -1f + (float)which2 * 0.2f),
+                    yStopCoordinate = 33000,
+                    texture = this.submarineSprites,
+                    sourceRect = new Microsoft.Xna.Framework.Rectangle(132 + which2 * 8, 20, 8, 8),
+                    animationLength = 1,
+                    interval = 200000f,
+                    xPeriodic = true,
+                    xPeriodicLoopTime = 1500f,
+                    xPeriodicRange = 12f,
+                    initialPosition = pos4,
+                    position = pos4,
+                    scale = 2f
+                });
+            }
+
+            bool should_wave = false; 
 			
 				foreach (Farmer farmer in farmers)
 				{
-					Point point = farmer.TilePoint;
+					Microsoft.Xna.Framework.Point point = farmer.TilePoint;
 					if (point.X > 96 && point.Y > 114 || point.X < 90 && point.Y < 115)
 					{
 						should_wave = true;
@@ -904,7 +1032,7 @@ namespace NuclearBombLocations
 			{
 				suspensionBridge.Draw(b);
 			}
-
+            /*
 			//if (MermaidIsHere())
 			{
 				int frame = 0;
@@ -914,7 +1042,7 @@ namespace NuclearBombLocations
 				}
 				b.Draw(mermaidSprites, Game1.GlobalToLocal(new Vector2(15f, 23f) * 64f + new Vector2(0f, -8f) * 4f), new Microsoft.Xna.Framework.Rectangle(304 + 28 * frame, 592, 28, 36), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.0009f);
 			}
-			
+			*/
 			
 		}
 
@@ -1030,7 +1158,24 @@ namespace NuclearBombLocations
 
 			base.checkForMusic(time);
 		}
-		public override void cleanupBeforePlayerExit()
+        /*
+        public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
+        {
+            int x = this.map.GetLayer("AlwaysFront").LayerHeight;
+            int y = this.map.GetLayer("AlwaysFront").LayerWidth;
+
+            base.drawAboveAlwaysFrontLayer(b);
+            //bool num = y == this.map.GetLayer("AlwaysFront2").LayerHeight - 1;
+          //  bool flag = y == 0;
+            b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(0, 0 )), new Microsoft.Xna.Framework.Rectangle(0 * 64, 2064, 64, 64), Microsoft.Xna.Framework.Color.BlueViolet, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.56f);
+            //if (num)
+            {
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y + 1) * 64 - (int)waterPosition)), new Microsoft.Xna.Framework.Rectangle(waterAnimationIndex * 64, 2064 + (((x + (y + 1)) % 2 != 0) ? ((!waterTileFlip) ? 128 : 0) : (waterTileFlip ? 128 : 0)), 64, 64 - (int)(64f - waterPosition) - 1), Microsoft.Xna.Framework.Color.BlueViolet, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.56f);
+            }
+        }*/
+
+
+        public override void cleanupBeforePlayerExit()
 		{
 			base.cleanupBeforePlayerExit();
 			
