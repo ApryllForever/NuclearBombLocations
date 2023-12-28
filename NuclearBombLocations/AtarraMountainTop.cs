@@ -29,6 +29,8 @@ namespace NuclearBombLocations
     [XmlType("Mods_ApryllForever_NuclearBombLocations_AtarraMountainTop")]
     public class AtarraMountainTop : NuclearLocation
     {
+        private List<WeatherDebris> weatherDebris;
+
         private Texture2D submarineSprites;
 
         static IModHelper Helper;
@@ -187,9 +189,12 @@ namespace NuclearBombLocations
 		public AtarraMountainTop(IModContentHelper content)
         : base(content, "AtarraMountainTop", "AtarraMountainTop")
         {
+            if (!Game1.IsMultiplayer)
+            {
+                base.ExtraMillisecondsPerInGameMinute = 1000;
+            }
 
-
-		}
+        }
 
 		
 
@@ -223,7 +228,7 @@ namespace NuclearBombLocations
         {
 			//this.seasonOverride = "spring";
 			base.resetLocalState();
-
+            this.weatherDebris?.Clear();
             this.submarineSprites = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\temporary_sprites_1");
             Game1.changeMusicTrack("junimoKart_whaleMusic");
 
@@ -273,7 +278,7 @@ namespace NuclearBombLocations
             rand = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnArea;
             spawnArea = new Microsoft.Xna.Framework.Rectangle(4, 10, 50, 40);
-            for (int tries = 40; tries > 0; tries--)
+            for (int tries = 34; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea, rand);
@@ -337,7 +342,7 @@ namespace NuclearBombLocations
             rand1 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnArea1;
             spawnArea1 = new Microsoft.Xna.Framework.Rectangle(18, 25, 12, 10);
-            for (int tries = 8; tries > 0; tries--)
+            for (int tries = 6; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea1, rand1);
@@ -366,7 +371,7 @@ namespace NuclearBombLocations
             rand2 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
             Microsoft.Xna.Framework.Rectangle spawnArea2;
             spawnArea2 = new Microsoft.Xna.Framework.Rectangle(18, 25, 12, 10);
-            for (int tries = 10; tries > 0; tries--)
+            for (int tries = 6; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea2, rand2);
@@ -414,7 +419,7 @@ namespace NuclearBombLocations
             this.addedMermaidLavaCrabsToday.Value = true;
 
             rand2 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
-            for (int tries = 27; tries > 0; tries--)
+            for (int tries = 24; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea, rand);
@@ -437,7 +442,7 @@ namespace NuclearBombLocations
             this.addedMermaidIridiumCrabsToday.Value = true;
 
             rand2 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
-            for (int tries = 18; tries > 0; tries--)
+            for (int tries = 14; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea, rand);
@@ -459,7 +464,7 @@ namespace NuclearBombLocations
             this.addedMermaidSerpentToday.Value = true;
 
             rand2 = Utility.CreateRandom(Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame, 12.0);
-            for (int tries = 18; tries > 0; tries--)
+            for (int tries = 14; tries > 0; tries--)
             {
                 Vector2 tile;
                 tile = Utility.getRandomPositionInThisRectangle(spawnArea, rand);

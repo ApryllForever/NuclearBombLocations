@@ -32,6 +32,7 @@ using StardewValley.GameData.Buildings;
 using SpaceCore.UI;
 using StardewValley.Tools;
 using StardewValley.Events;
+using System.Timers;
 
 namespace NuclearBombLocations
 {
@@ -46,12 +47,17 @@ namespace NuclearBombLocations
 
         private readonly string PublicAssetBasePath = "Mods/SlimeTent";
 
-       // public static Random myRand;
+        private float submergeTimer;
+
+        private Texture2D submarineSprites;
+
+        // public static Random myRand;
 
         public override void Entry(IModHelper helper)
         {
             instance = this;
 
+           //var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
 
             Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
@@ -62,6 +68,9 @@ namespace NuclearBombLocations
             //Helper.Events.GameLoop.DayEnding += OnDayEnding;
 
              Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+
+            //SpaceEvents.
+            
 
 
             var harmony = new Harmony(ModManifest.UniqueID);
@@ -206,7 +215,101 @@ namespace NuclearBombLocations
 
             sc.RegisterSerializerType(typeof(AtarraMountainTop));
 
+            sc.RegisterSerializerType(typeof(NuclearSunkenShip));
+
             //sc.RegisterCustomProperty(typeof(Building), "[XmlInclude(typeof(SlimeTent))]", typeof(NetRef<SlimeTent>), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.get_SlimeTent)), AccessTools.Method(typeof(SlimeTent), nameof(SlimeTent.set_SlimeTent)));
+
+            // var spacecore = this.Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
+
+            //spacecore.AddEventCommand("NuclearMermaidSubmarineDive", PatchHelper.RequireMethod<Mod>(nameof(Mod.EventCommand_NuclearMermaidSubmarineDive)));
+
+            Event.RegisterCommand("NuclearMermaidSubmarineDive", delegate
+            {
+                MermaidNuclearSub mermaidNuclearSub = new MermaidNuclearSub();
+                mermaidNuclearSub.answerDialogueAction("SubmergeQuestion_Yes", LegacyShimsEvil.EmptyArray<string>());
+
+              /*  
+                DelayedAction.playSoundAfterDelay("cowboy_monsterhit", 200);
+                DelayedAction.playSoundAfterDelay("cowboy_monsterhit", 400);
+                
+                this.submergeTimer = 1f;
+                DelayedAction.playSoundAfterDelay("ApryllForever.NuclearBomb_DiveKlaxon", 1000);
+
+                Game1.changeMusicTrack("Hospital_Ambient");
+
+                if (this.submergeTimer > 0f)
+                {
+                   var time = new GameTime();
+
+
+                    this.submergeTimer -= ( 1  * time.ElapsedGameTime.Milliseconds);
+                    Game1.background.c.B = (byte)(Math.Max(this.submergeTimer / 20000f, 0.2f) * 255f);
+                    Game1.background.c.G = (byte)(Math.Max(this.submergeTimer / 20000f, 0f) * 50f);
+                    if (this.submergeTimer <= 0f)
+                    {
+                       
+                        Game1.changeMusicTrack("none");
+                        Game1.playSound("submarine_landing");
+                        Game1.background.tempSprites.Add(new TemporaryAnimatedSprite    // THIS IS THE PLANTS BACKGROUND!!!
+                        {
+                            motion = new Vector2(0f, -1f),
+                            yStopCoordinate = 120,
+                            texture = this.submarineSprites,
+                            sourceRect = new Microsoft.Xna.Framework.Rectangle(257, 98, 182, 25),
+                            animationLength = 1,
+                            interval = 999999f,
+                            position = new Vector2(148f, 66f) * 4f,
+                            scale = 4f
+                        });
+                        Game1.background.tempSprites.Add(new TemporaryAnimatedSprite  //another plants bg
+                        {
+                            motion = new Vector2(0f, -1f),
+                            yStopCoordinate = 460,
+                            texture = this.submarineSprites,
+                            sourceRect = new Microsoft.Xna.Framework.Rectangle(441, 86, 66, 37),
+                            animationLength = 1,
+                            interval = 999999f,
+                            position = new Vector2(18f, 149f) * 4f,
+                            scale = 4f
+                        });
+                    }
+                   
+                    }
+                */
+
+            }
+
+
+
+
+
+
+
+
+                );
+
+
+            Event.RegisterCommand("NuclearMermaidSubmarineDiving", delegate
+            {
+               
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+                );
+
+
 
         }
 
@@ -222,6 +325,7 @@ namespace NuclearBombLocations
                 Game1.locations.Add(new NuclearSubmarinePen(Helper.ModContent));
                 Game1.locations.Add(new MermaidNuclearSub(Helper.ModContent));
                 Game1.locations.Add(new AtarraMountainTop(Helper.ModContent));
+                Game1.locations.Add(new NuclearSunkenShip(Helper.ModContent));
             }
 
         }
@@ -334,16 +438,16 @@ namespace NuclearBombLocations
         private void OnUpdateTicked(object sender, EventArgs e)
             {
 
-           
-
-
-
-
-
-
             }
 
+        public static void EventCommand_NuclearMermaidSubmarineDive(Event instance, GameLocation location, GameTime time, string[] split)
+        {
+           
 
+            instance.CurrentCommand++;
+           
+                ++instance.CurrentCommand;
+        }
 
 
 

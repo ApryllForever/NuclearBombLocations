@@ -188,6 +188,10 @@ namespace NuclearBombLocations
             {
                 return;
             }
+            if (Game1.currentLocation is AtarraMountainTop)
+            {
+                return;
+            }
             double mapArea = map.Layers[0].LayerWidth * map.Layers[0].LayerHeight;
             double butterflyChance;
             double birdieChance;
@@ -218,6 +222,10 @@ namespace NuclearBombLocations
 
         new public void addClouds(double chance, bool onlyIfOnScreen = false)
         {
+            if (Game1.currentLocation is AtarraMountainTop)
+            {
+                return;
+            }
             if (!Game1.currentSeason.Equals("spring") || Game1.IsRainingHere(this) || Game1.weatherIcon == 4 || Game1.timeOfDay >= Game1.getStartingToGetDarkTime() - 100)
             {
                 return;

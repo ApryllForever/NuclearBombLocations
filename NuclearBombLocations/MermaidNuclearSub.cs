@@ -9,6 +9,7 @@ using StardewValley.Tools;
 using xTile.Dimensions;
 using StardewValley.Locations;
 using StardewValley;
+using xTile.Layers;
 
 namespace NuclearBombLocations
 {
@@ -241,12 +242,30 @@ namespace NuclearBombLocations
 			this.localAscending = false;
 		}
 
-		public override bool canFishHere()
+		public override bool performAction(string actionStr, Farmer who, xTile.Dimensions.Location tileLocation)
 		{
-			return this.curtainOpenPercent >= 1f;
-		}
+			string[] split = actionStr.Split(' ');
+			string action = split[0];
+			int tx = tileLocation.X;
+			int ty = tileLocation.Y;
+			Layer layer = Map.GetLayer("Buildings");
 
-		public override void performTenMinuteUpdate(int timeOfDay)
+
+			if (action == "NuclearMermaidSubDive")
+			{
+				this.answerDialogueAction("SubmergeQuestion_Yes", LegacyShimsEvil.EmptyArray<string>());
+
+
+
+
+			}
+
+
+            return base.performAction(action, who, tileLocation);
+        }
+
+
+        public override void performTenMinuteUpdate(int timeOfDay)
 		{
 			base.performTenMinuteUpdate(timeOfDay);
 			Random r;
@@ -283,8 +302,8 @@ namespace NuclearBombLocations
 		public override void UpdateWhenCurrentLocation(GameTime time)
 		{
 			base.UpdateWhenCurrentLocation(time);
-			if (!Game1.player.currentLocation.Equals(this) || !Game1.shouldTimePass())
-			{
+			if (!Game1.player.currentLocation.Equals(this)) //|| !Game1.shouldTimePass()
+            {
 				return;
 			}
 			if (this.curtainMovement != 0f)
