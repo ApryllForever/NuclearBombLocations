@@ -57,7 +57,7 @@ namespace NuclearBombLocations
         {
             instance = this;
 
-           //var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
+            //var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
 
             Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
@@ -67,10 +67,12 @@ namespace NuclearBombLocations
 
             //Helper.Events.GameLoop.DayEnding += OnDayEnding;
 
-             Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 
-            //SpaceEvents.
-            
+            Helper.Events.Player.Warped += OnWarped;
+
+            SpaceEvents.BeforeWarp += BeforeWarped;
+
 
 
             var harmony = new Harmony(ModManifest.UniqueID);
@@ -126,15 +128,15 @@ namespace NuclearBombLocations
             else if (spouse != null)
                 __result = false;
 
-           
-			return false;
+
+            return false;
 
         }
 
 
 
 
-        private static void ReturnMenu_Prefix( )
+        private static void ReturnMenu_Prefix()
         {
             // Not our place, we don't care
             if (Game1.player.currentLocation is not ClairabelleLagoon)
@@ -151,14 +153,14 @@ namespace NuclearBombLocations
                     Game1.player.viewingLocation.Value = null;
                     Game1.viewportFreeze = false;
                     Game1.viewport.Location = new Location(320, 1536);
-                   // __instance.freeze = true;                                   will need reflection, is private
+                    // __instance.freeze = true;                                   will need reflection, is private
                     Game1.displayFarmer = true;
                     AnabelleConstructionMessage();
                 };
                 Game1.warpFarmer(locationRequest, Game1.player.TilePoint.X, Game1.player.TilePoint.Y, Game1.player.FacingDirection);
 
             }
-            
+
         }
 
 
@@ -171,25 +173,21 @@ namespace NuclearBombLocations
 
 
             Game1.player.forceCanMove();
-           
+
 
             string text = "Strings\\StringsFromCSFiles:Annabelle.ConstructionBegin";
-          
+
 
             string text2 = "Your work will begin tomorrow!!";
-           
+
 
             //string[] array = ArgUtility.SplitBySpace(Blueprint.DisplayName);
             string text3 = "Your work will begin tomorrow!!!";
-           
-            
+
+
 
             Game1.DrawDialogue(Game1.getCharacterFromName("MermaidRangerAnabelle"), text);
         }
-
-
-
-
 
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -223,88 +221,23 @@ namespace NuclearBombLocations
 
             //spacecore.AddEventCommand("NuclearMermaidSubmarineDive", PatchHelper.RequireMethod<Mod>(nameof(Mod.EventCommand_NuclearMermaidSubmarineDive)));
 
+
+            
             Event.RegisterCommand("NuclearMermaidSubmarineDive", delegate
             {
                 MermaidNuclearSub mermaidNuclearSub = new MermaidNuclearSub();
                 mermaidNuclearSub.answerDialogueAction("SubmergeQuestion_Yes", LegacyShimsEvil.EmptyArray<string>());
 
-              /*  
-                DelayedAction.playSoundAfterDelay("cowboy_monsterhit", 200);
-                DelayedAction.playSoundAfterDelay("cowboy_monsterhit", 400);
-                
-                this.submergeTimer = 1f;
-                DelayedAction.playSoundAfterDelay("ApryllForever.NuclearBomb_DiveKlaxon", 1000);
-
-                Game1.changeMusicTrack("Hospital_Ambient");
-
-                if (this.submergeTimer > 0f)
-                {
-                   var time = new GameTime();
-
-
-                    this.submergeTimer -= ( 1  * time.ElapsedGameTime.Milliseconds);
-                    Game1.background.c.B = (byte)(Math.Max(this.submergeTimer / 20000f, 0.2f) * 255f);
-                    Game1.background.c.G = (byte)(Math.Max(this.submergeTimer / 20000f, 0f) * 50f);
-                    if (this.submergeTimer <= 0f)
-                    {
-                       
-                        Game1.changeMusicTrack("none");
-                        Game1.playSound("submarine_landing");
-                        Game1.background.tempSprites.Add(new TemporaryAnimatedSprite    // THIS IS THE PLANTS BACKGROUND!!!
-                        {
-                            motion = new Vector2(0f, -1f),
-                            yStopCoordinate = 120,
-                            texture = this.submarineSprites,
-                            sourceRect = new Microsoft.Xna.Framework.Rectangle(257, 98, 182, 25),
-                            animationLength = 1,
-                            interval = 999999f,
-                            position = new Vector2(148f, 66f) * 4f,
-                            scale = 4f
-                        });
-                        Game1.background.tempSprites.Add(new TemporaryAnimatedSprite  //another plants bg
-                        {
-                            motion = new Vector2(0f, -1f),
-                            yStopCoordinate = 460,
-                            texture = this.submarineSprites,
-                            sourceRect = new Microsoft.Xna.Framework.Rectangle(441, 86, 66, 37),
-                            animationLength = 1,
-                            interval = 999999f,
-                            position = new Vector2(18f, 149f) * 4f,
-                            scale = 4f
-                        });
-                    }
-                   
-                    }
-                */
 
             }
 
+                 
 
 
+            //Event.RegisterCommand("NuclearMermaidSubmarineDiving", delegate
+            //{
 
-
-
-
-
-                );
-
-
-            Event.RegisterCommand("NuclearMermaidSubmarineDiving", delegate
-            {
-               
-
-
-
-
-
-
-            }
-
-
-
-
-
-
+            //}
 
 
                 );
@@ -332,83 +265,83 @@ namespace NuclearBombLocations
 
         public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-           /* {  Attempt at making building using tractor code. Failing.
+            /* {  Attempt at making building using tractor code. Failing.
 
 
-                e.Edit(editor =>
-                {
-                    var data = editor.AsDictionary<string, BuildingData>().Data;
+                 e.Edit(editor =>
+                 {
+                     var data = editor.AsDictionary<string, BuildingData>().Data;
 
-                    data["MermaidSlimeTent"] = new BuildingData
-                    {
-                        Name = "Slime Tent",
-                        Description = "This expirimental Navy structure provides the perfect home for slimes on your farm!",
-                        Texture = $"{this.PublicAssetBasePath}/SlimeTent",
-                        BuildingType = typeof(SlimeHutch).FullName,
-                        SortTileOffset = 1,
+                     data["MermaidSlimeTent"] = new BuildingData
+                     {
+                         Name = "Slime Tent",
+                         Description = "This expirimental Navy structure provides the perfect home for slimes on your farm!",
+                         Texture = $"{this.PublicAssetBasePath}/SlimeTent",
+                         BuildingType = typeof(SlimeHutch).FullName,
+                         SortTileOffset = 1,
 
-                        SourceRect = {
-                        X = 0,
-                        Y = 0,
-                        Width = 48,
-                        Height = 80
-          },
+                         SourceRect = {
+                         X = 0,
+                         Y = 0,
+                         Width = 48,
+                         Height = 80
+           },
 
-                        Builder = "MermaidRangerAnabelle",
-                        BuildCost = 29000,
-                        BuildMaterials = new[]
-                        {
-                            new BuildingMaterial()
-                            {
-                                ItemId =  "(O)335",
-                                Amount = 20,
-                            },
-                            new BuildingMaterial()
+                         Builder = "MermaidRangerAnabelle",
+                         BuildCost = 29000,
+                         BuildMaterials = new[]
+                         {
+                             new BuildingMaterial()
                              {
-                                ItemId = "(O)337",
-                                Amount = 1
+                                 ItemId =  "(O)335",
+                                 Amount = 20,
                              },
-                            new BuildingMaterial()
-                            {
-                                ItemId = "(O)428",
-                                Amount = 10,
-                            },
-                        }.ToList(),
-                        BuildDays = 1,
+                             new BuildingMaterial()
+                              {
+                                 ItemId = "(O)337",
+                                 Amount = 1
+                              },
+                             new BuildingMaterial()
+                             {
+                                 ItemId = "(O)428",
+                                 Amount = 10,
+                             },
+                         }.ToList(),
+                         BuildDays = 1,
 
-                        Size = new Point(3, 4),
-                        HumanDoor = new Point(1, 2),
-                        IndoorMap = "Custom_SlimeTentInside",
-                        IndoorMapType = typeof(SlimeTent).FullName,
+                         Size = new Point(3, 4),
+                         HumanDoor = new Point(1, 2),
+                         IndoorMap = "Custom_SlimeTentInside",
+                         IndoorMapType = typeof(SlimeTent).FullName,
 
 
-                        //CollisionMap = "XXXX\nXOOX"
-                    };
-                });
-            }
-           */
+                         //CollisionMap = "XXXX\nXOOX"
+                     };
+                 });
+             }
+            */
             //if (e.NameWithoutLocale.IsEquivalentTo("Maps/Custom_SlimeTentInside"))
-           // {
-                
+            // {
 
 
-              //  e.Edit(asset =>
-           // {
-                //var editor = asset.AsMap();
 
-               // Map sourceMap = this.Helper.ModContent.Load<Map>("SlimeTentInside.tmx");
+            //  e.Edit(asset =>
+            // {
+            //var editor = asset.AsMap();
 
-                // sourceMap.
+            // Map sourceMap = this.Helper.ModContent.Load<Map>("SlimeTentInside.tmx");
 
-                //Sinz Idea
-                //I would check out how Tractor Mod handles replacing the whole horse thing with Tractor thing, and that having a reference to the slimetent Building instance would give you the GameLocation instance that you can then mess with, though if you want to do netfield schenigans then you are in harmony patch land anyway
-              //  the mapPath variable on GameLocation instance would be the Maps\\{ IndoorMap}
-               // value which you can use to only modify Slime Tents but not Slime Hutches
+            // sourceMap.
 
-                //editor.PatchMap(sourceMap, targetArea: new Microsoft.Xna.Framework.Rectangle(30, 10, 20, 20));
-         //   });
+            //Sinz Idea
+            //I would check out how Tractor Mod handles replacing the whole horse thing with Tractor thing, and that having a reference to the slimetent Building instance would give you the GameLocation instance that you can then mess with, though if you want to do netfield schenigans then you are in harmony patch land anyway
+            //  the mapPath variable on GameLocation instance would be the Maps\\{ IndoorMap}
+            // value which you can use to only modify Slime Tents but not Slime Hutches
 
-           // }
+            //editor.PatchMap(sourceMap, targetArea: new Microsoft.Xna.Framework.Rectangle(30, 10, 20, 20));
+            //   });
+
+            // }
 
 
 
@@ -423,32 +356,61 @@ namespace NuclearBombLocations
             //Maps\Custom_SlimeTentInside
 
 
-           // e.Edit(asset =>
+            // e.Edit(asset =>
             //{
-                //var editor = asset.AsMap();
+            //var editor = asset.AsMap();
 
-                // Map sourceMap = ModEntry.Helper.ModContent.Load<Map>("AtomicScienceSilo.tmx");
-                //Map sourceMap2 = ModEntry.Helper.ModContent.Load<Map>("AtomicScienceSilo.tmx");
-                //editor.PatchMap(sourceMap, targetArea: new Rectangle(30, 10, 20, 20));
-           // });
+            // Map sourceMap = ModEntry.Helper.ModContent.Load<Map>("AtomicScienceSilo.tmx");
+            //Map sourceMap2 = ModEntry.Helper.ModContent.Load<Map>("AtomicScienceSilo.tmx");
+            //editor.PatchMap(sourceMap, targetArea: new Rectangle(30, 10, 20, 20));
+            // });
 
         }
 
-        
-        private void OnUpdateTicked(object sender, EventArgs e)
-            {
 
-            }
+        private void OnUpdateTicked(object sender, EventArgs e)
+        {
+
+        }
 
         public static void EventCommand_NuclearMermaidSubmarineDive(Event instance, GameLocation location, GameTime time, string[] split)
         {
-           
+
 
             instance.CurrentCommand++;
-           
-                ++instance.CurrentCommand;
+
+            ++instance.CurrentCommand;
         }
 
+        public void BeforeWarped(object sender, EventArgsBeforeWarp e)
+        {
+            string Stop = "You may not go through this door. Marisol does not know if you can be trusted yet enough to enter here. Only those closest to her may go here.";
+
+            if (e.WarpTargetLocation.Name.Equals("Custom_NuclearSubmarinePen") && !Game1.player.mailReceived.Contains("NuclearBombCP.Marisol10HeartInvite"))
+            {
+                Game1.drawObjectDialogue(Stop);
+                e.Cancel = true;
+
+            }
+
+
+          
+           
+        }
+
+        public void OnWarped(object sender, WarpedEventArgs e)
+        {
+            // if (e.OldLocation is MermaidDugoutHouse && e.NewLocation is NuclearSubmarinePen && !Game1.player.mailReceived.Contains("NuclearBombCP.Marisol10HeartInvite"))
+            //  {
+
+            //   return;
+
+
+
+
+            // }
+
+        }
 
 
 

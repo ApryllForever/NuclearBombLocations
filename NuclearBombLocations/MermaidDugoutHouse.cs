@@ -77,6 +77,9 @@ namespace NuclearBombLocations
             Game1.changeMusicTrack("Cavern");
             swimShadow = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\swimShadow");
 
+            
+
+
         }
         public override void cleanupBeforePlayerExit()
         {
