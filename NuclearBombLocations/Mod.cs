@@ -33,11 +33,14 @@ using SpaceCore.UI;
 using StardewValley.Tools;
 using StardewValley.Events;
 using System.Timers;
+using StardewValley.Buffs;
+using System.Net.Mail;
 
 namespace NuclearBombLocations
 {
     public partial class Mod : StardewModdingAPI.Mod
     {
+        //public readonly StardewValley.Object siren = (Object)ItemRegistry.Create("ApryllForever.NuclearBombCP_SirenSnack");
 
         public static Mod instance;
 
@@ -71,6 +74,8 @@ namespace NuclearBombLocations
 
             Helper.Events.Player.Warped += OnWarped;
 
+            SpaceEvents.OnItemEaten += OnItemEaten;
+
             SpaceEvents.BeforeWarp += BeforeWarped;
 
 
@@ -83,7 +88,7 @@ namespace NuclearBombLocations
           );
 
             harmony.Patch(
-           original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.isGaySpouse)),
+           original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.isAdoptionSpouse)),
            prefix: new HarmonyMethod(typeof(Mod), nameof(Mod.NPC__isGaySpouse__Postfix))
         );
             /*
@@ -194,7 +199,7 @@ namespace NuclearBombLocations
         {
             Mod.ModHelper = Helper;
             Mod.ModMonitor = Monitor;
-
+       
 
 
             var sc = Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
@@ -367,6 +372,104 @@ namespace NuclearBombLocations
 
         }
 
+        private void OnItemEaten(object sender, EventArgs e)
+        {
+
+            if (sender != Game1.player)
+                return;
+
+            //var siren = "ApryllForever.NuclearBomb/Sirenated";
+
+            //StardewValley.Object siren = new Object();
+
+
+
+            if (Game1.player.itemToEat.ItemId == "ApryllForever.NuclearBombCP_SirenSnack")
+            //if (e.Equals("ApryllForever.NuclearBombCP_SirenSnack"))
+
+            {
+
+                Buff buff = new Buff(
+                id: "ApryllForever.NuclearBomb/Sirenated",
+                displayName: "Siren's Kiss", // can optionally specify description text too
+                description: "You feel the Kiss of the Goddess Vedyava flowing through your body! Your feet are light, your soul fiercer, and your fortune greater!",
+                iconTexture: this.Helper.ModContent.Load<Texture2D>("assets/Sirenated.png"),
+                iconSheetIndex: 0,
+                duration: 93_000, // 93 seconds
+                effects: new BuffEffects()
+                     {
+                        Speed = { 3 }, // shortcut for buff.Speed.Value = 3
+                        CombatLevel = { 23 },
+                        Attack = { 3 },
+
+                      }
+                                 );
+                Game1.player.applyBuff(buff);
+            }
+
+            if (Game1.player.itemToEat.ItemId == "ApryllForever.NuclearBombCP_FairySnack")
+            {
+                Buff buff = new Buff(
+        id: "ApryllForever.NuclearBomb/Fairyinated",
+        displayName: "Fairy's Kiss", // can optionally specify description text too
+        description: "You feel the Kiss of Epona flowing through your heart! You ",
+        iconTexture: this.Helper.ModContent.Load<Texture2D>("assets/Sirenated.png"),
+        iconSheetIndex: 1,
+        duration: 93_000, // 93 seconds
+        effects: new BuffEffects()
+                {
+            Speed = { 3 }, // shortcut for buff.Speed.Value = 3
+            LuckLevel = { 3 },
+            ForagingLevel = { 3 },
+
+                }
+            );
+                Game1.player.applyBuff(buff);
+            };
+
+            if (Game1.player.itemToEat.ItemId == "ApryllForever.NuclearBombCP_VampyreSnack")
+         
+            {
+                Buff buff3 = new Buff(
+        id: "ApryllForever.NuclearBomb/Vampirinated",
+        displayName: "Vampyre's Kyss", // can optionally specify description text too
+        description: "Myst fills the your eyes as the Kiss of Hekate fills you, the joyful dread of those of both in the realm of the living and dead... ",
+        iconTexture: this.Helper.ModContent.Load<Texture2D>("assets/Sirenated.png"),
+        iconSheetIndex: 2,
+    
+        duration: 93_000, // 93 seconds
+        
+        effects: new BuffEffects()
+        {
+            Speed = { 6 }, // shortcut for buff.Speed.Value = 3
+            LuckLevel = { 3 },
+            Attack = { 37 },
+            Defense = { -23 },
+            MaxStamina = { -43 },
+            CombatLevel = { 13 },
+
+            
+
+        }
+                                     );
+
+                Game1.player.applyBuff(buff3);
+                Game1.player.glowingColor = Color.Indigo;
+               
+                Game1.ambientLight = Color.OrangeRed;
+                Game1.ambientLight = new Color(210, 40, 0) * 120;
+                Game1.player.stamina -= 97;
+            }
+
+            
+
+
+
+
+
+        }
+
+
 
         private void OnUpdateTicked(object sender, EventArgs e)
         {
@@ -405,10 +508,16 @@ namespace NuclearBombLocations
 
             //   return;
 
-
-
-
             // }
+
+            if(Game1.player.hasBuff("ApryllForever.NuclearBomb/Vampirinated"))
+            {
+
+                Game1.ambientLight = new Color(210, 40, 0) * 120;
+
+
+            }
+
 
         }
 

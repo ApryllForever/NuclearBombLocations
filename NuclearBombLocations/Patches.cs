@@ -18,9 +18,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NuclearBombLocations
 
 
-
-
-
 {
 
 
@@ -225,7 +222,7 @@ namespace NuclearBombLocations
                     new Response("Not", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_No"))
                 };
 
-                if (!Game1.player.isMale)
+                if (!Game1.player.Gender.Equals(Gender.Male))
                 {
                     Game1.currentLocation.createQuestionDialogue(Game1.content.LoadString("Strings\\Events:HavePlayerBabyQuestion"), answers, new GameLocation.afterQuestionBehavior(ModEntry.answerPregnancyQuestion));
                 }
@@ -258,7 +255,7 @@ namespace NuclearBombLocations
            
             Game1.player.CanMove = false;
             ___isMale = false;
-            if (Game1.player.isMale)
+            if (Game1.player.Gender.Equals(Gender.Male))
             {
                 ___message = Game1.content.LoadString("Strings\\Events:BirthMessage_Adoption", Lexicon.getGenderedChildTerm(___isMale));
             }

@@ -773,7 +773,7 @@ namespace NuclearBombLocations
 					
 
                     case "ReturnSub_Yes":
-                        performTouchAction("Warp " + "Custom_MermaidNuclearSub 19 9", Game1.player.Tile);
+                        performTouchAction("Warp " + "Custom_NuclearSubmarinePen 27 19", Game1.player.Tile);
                         break;
 
                 }
