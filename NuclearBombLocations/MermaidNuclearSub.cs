@@ -145,6 +145,20 @@ namespace NuclearBombLocations
                 }
                 return true;
             }
+            if (base.getTileIndexAt(tileLocation, "Buildings") == 703) //Sonar Ping
+			{
+				Game1.playSound("ApryllForever.NuclearBomb_SonarPing");
+
+                return true;
+
+            }
+            if (base.getTileIndexAt(tileLocation, "Buildings") == 663) //Sonar Ping
+            {
+                Game1.playSound("ApryllForever.NuclearBomb_SonarPing");
+
+                return true;
+
+            }
 
 
             return base.checkAction(tileLocation, viewport, who);
@@ -568,7 +582,7 @@ namespace NuclearBombLocations
 
                         motion = new Vector2(-0f, -1f),
                         color = new Color(0, 50, 150),
-                        yStopCoordinate = 64,
+                        yStopCoordinate = 256,
                         texture = this.submarineSprites,
                         sourceRectStartingPos = new Vector2(67f, 189f),
                         sourceRect = new Microsoft.Xna.Framework.Rectangle(67, 189, 24, 53),

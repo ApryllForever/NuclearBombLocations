@@ -36,9 +36,9 @@ namespace NuclearBombLocations
 
 		private readonly NetEvent1Field<int, NetInt> rumbleAndFadeEvent = new NetEvent1Field<int, NetInt>();
 
-	
+        public static string SwimQuestion = "Do you want to call the Prismatic Pod to meet up for a swim?";
 
-		private static Multiplayer multiplayer;
+        private static Multiplayer multiplayer;
 
 
 		//Mermaid Related Code Below
@@ -772,6 +772,13 @@ namespace NuclearBombLocations
                         Game1.player.forceCanMove();
                         Utility.TryOpenShopMenu("NuclearBomb.BikiniAtoll", "MermaidRangerAnabelle");
                         break;
+
+                    case "MariSwim_Yes":
+
+                        Event MariSwimEvent = new Event((Game1.content.LoadString("Data\\Events\\Custom_ClairabelleLagoon:PrismaticPodSwimEvent", ArgUtility.EscapeQuotes(Game1.player.Name))));
+                        this.startEvent(MariSwimEvent);
+
+                        return true;
                 }
 			}
 
@@ -1061,10 +1068,26 @@ namespace NuclearBombLocations
                 case 958:
                 case 1080:
                 case 1081:
-                    base.ShowMineCartMenu(this, new Point(tileLocation.X, tileLocation.Y));
+                    base.ShowMineCartMenu("Default","Custom_ClairabelleLagoon");
                     return true;
             }
-            return base.checkAction(tileLocation, viewport, who);
+			if (Game1.player.eventsSeen.Contains("NuclearMarisol14Heart"))
+
+			{
+                switch (base.getTileIndexAt(tileLocation, "Buildings"))
+                {
+                    case 1120:
+
+                        createQuestionDialogue(SwimQuestion, createYesNoResponses(), "MariSwim");
+
+                        return true;
+                }
+
+            }
+
+
+
+                return base.checkAction(tileLocation, viewport, who);
         }
 
 
