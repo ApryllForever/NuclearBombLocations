@@ -17,12 +17,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NuclearBombLocations
 
-
 {
-
-
-
-
     [HarmonyPatch(typeof(Tree), nameof(Tree.performToolAction))]
     public static class TreeToolActionPatch
     {
@@ -34,7 +29,7 @@ namespace NuclearBombLocations
                 if (Game1.currentLocation is ClairabelleLagoon)
                 {
                     __instance.health.Value = 999999999999;
-                    Game1.player.Money -= 100;
+                    Game1.player.Money -= 10;
                     Game1.addHUDMessage(new HUDMessage("Ranger Anabelle tickets you for illegal wood harvesting in the national park! You got what was coming to you!!!", 1));
                 }
             }
@@ -43,26 +38,13 @@ namespace NuclearBombLocations
                 if (Game1.currentLocation is ClairabelleLagoon)
                 {
                     __instance.health.Value = 999999999999;
-                    Game1.player.Money -= 100;
+                    Game1.player.Money -= 10;
                     Game1.addHUDMessage(new HUDMessage("Ranger Anabelle tickets you for illegal wood harvesting in the national park! You got what was coming to you!!!", 1));
 
                 }
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /*
 
@@ -171,11 +153,6 @@ namespace NuclearBombLocations
 
     */
 
-
-
-
-
-
             /*
             [HarmonyPatch(typeof(NPC), nameof(NPC.isGaySpouse))]
             public static class GayNPCPatch
@@ -240,9 +217,6 @@ namespace NuclearBombLocations
     }
     
 
-
-
-
     [HarmonyPatch(typeof(BirthingEvent), nameof(BirthingEvent.setUp))]
     public static class BirthingEventSetup
     {
@@ -269,7 +243,7 @@ namespace NuclearBombLocations
         }
     }
 
-
+    /*
     [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.UpdateWhenCurrentLocation))]
     public static class Game1UpdateDungeonLocationsPatch
     {
@@ -289,6 +263,6 @@ namespace NuclearBombLocations
             //SlimeTent.UpdateWhenCurrentLocation();
 
         }
-    }
+    }*/
 
 }

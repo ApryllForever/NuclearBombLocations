@@ -181,10 +181,10 @@ namespace NuclearBombLocations
             }
             return base.IsLocationSpecificPlacementRestriction(tileLocation);
         }
-        //static string EnterDungeon = "Do you wish to enter this forboding gate?";
+        
         protected override void resetLocalState()
         {
-			//this.seasonOverride = "spring";
+			
 			base.resetLocalState();
 
 			//suspensionBridges.Clear();
@@ -417,15 +417,6 @@ namespace NuclearBombLocations
         }
 
 
-
-
-
-
-
-
-
-
-
         public override void DayUpdate(int dayOfMonth)
         {
             base.DayUpdate(dayOfMonth);
@@ -487,11 +478,7 @@ namespace NuclearBombLocations
             }
         }
 
-
-
-
-
-        public override void updateEvenIfFarmerIsntHere(GameTime time, bool skipWasUpdatedFlush = false)
+      public override void updateEvenIfFarmerIsntHere(GameTime time, bool skipWasUpdatedFlush = false)
 		{
 			base.updateEvenIfFarmerIsntHere(time, skipWasUpdatedFlush);
 			rumbleAndFadeEvent.Poll();
@@ -500,22 +487,7 @@ namespace NuclearBombLocations
 				
 			}
 		}
-
-		private void rumbleAndFade(int milliseconds)
-		{
-			rumbleAndFadeEvent.Fire(milliseconds);
-		}
-
-		private void performRumbleAndFade(int milliseconds)
-		{
-			if (Game1.currentLocation == this)
-			{
-				Rumble.rumbleAndFade(1f, milliseconds);
-			}
-		}
-
 	
-
 		public void mermaidDanceShow()
         {
 			string mermaidDanceSpeech = "Fiona: Hey Lovelies! Thanks for coming to my performance!!!";
@@ -533,10 +505,8 @@ namespace NuclearBombLocations
 
 		public void cannonFire()
         {
-
 			GameLocation location = new GameLocation();
 			location.netAudio.StopPlaying("fuse");
-
 		}
 
 		public override bool performAction(string action, Farmer who, Location tileLocation)
@@ -749,10 +719,6 @@ namespace NuclearBombLocations
             return false;
         }
 
-
-
-
-
         public override bool answerDialogue(Response answer)
         {
 
@@ -846,7 +812,7 @@ namespace NuclearBombLocations
 				double butterflyChance = Math.Max(0.7, Math.Min(0.25, mapArea / 15000.0));
 				addBirdies(butterflyChance, onlyIfOnScreen);
 			}
-			if (Game1.currentSeason == "winter" && Game1.isDarkOut())
+			if (Game1.currentSeason == "winter" && Game1.isDarkOut(this))
 			{
 				addMoonlightJellies(50, new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame - 24917), new Microsoft.Xna.Framework.Rectangle(0, 0, 0, 0));
 			}
@@ -871,16 +837,13 @@ namespace NuclearBombLocations
                 addBunnies(chance3, onlyIfOnScreen);
                 addSquirrels(chance4, onlyIfOnScreen);
                 addWoodpecker(chance5, onlyIfOnScreen = false);
-                if (Game1.isDarkOut() && Game1.random.NextDouble() < 0.01)
+                if (Game1.isDarkOut(this) && Game1.random.NextDouble() < 0.01)
                 {
                     addOwl();
                 }
             }
 
         }
-
-
-
 
         public override void UpdateWhenCurrentLocation(GameTime time)
 		{
@@ -1181,7 +1144,7 @@ namespace NuclearBombLocations
 				{
 					localSound("seagulls");
 				}
-				else if (Game1.isDarkOut() && Game1.timeOfDay < 2500)
+				else if (Game1.isDarkOut(this) && Game1.timeOfDay < 2500)
 				{
 					Game1.changeMusicTrack("spring_night_ambient", track_interruptable: true);
 				}

@@ -93,26 +93,7 @@ namespace NuclearBombLocations
         protected override void resetLocalState()
         {
             base.resetLocalState();
-            /*
-            if (!this.map.Properties.TryGetValue("Music", out var musicValue) || musicValue == null)
-            {
-                Game1.changeMusicTrack("woodsTheme");
-            }
-            else
-            {
-                string[] split2 = musicValue.ToString().Split(' ');
-                if (split2.Length > 1)
-                {
-                    if (Game1.timeOfDay >= Convert.ToInt32(split2[0]) && Game1.timeOfDay < Convert.ToInt32(split2[1]) && !split2[2].Equals(Game1.getMusicTrackName()))
-                    {
-                        Game1.changeMusicTrack(split2[2]);
-                    }
-                }
-                else if (Game1.getMusicTrackName() == "none" || Game1.isMusicContextActiveButNotPlaying() || !split2[0].Equals(Game1.getMusicTrackName()))
-                {
-                    Game1.changeMusicTrack(split2[0]);
-                }
-            }*/
+          
 
         }
 
@@ -226,7 +207,7 @@ namespace NuclearBombLocations
             {
                 return;
             }
-            if (!Game1.currentSeason.Equals("spring") || Game1.IsRainingHere(this) || Game1.weatherIcon == 4 || Game1.timeOfDay >= Game1.getStartingToGetDarkTime() - 100)
+            if (!Game1.currentSeason.Equals("spring") || Game1.IsRainingHere(this) || Game1.weatherIcon == 4 || Game1.timeOfDay >= Game1.getStartingToGetDarkTime(this) - 100)
             {
                 return;
             }
@@ -358,11 +339,11 @@ namespace NuclearBombLocations
                 {
                     case "MeriCola_Yes":
 
-                        if (Game1.player.Money >= 300)
+                        if (Game1.player.Money >= 270)
                         {
                             int buttcoke = 94;// ExternalAPIs.JA.GetObjectId("MeriCola");
                             string mericola = Convert.ToString(buttcoke); 
-                            Game1.player.Money -= 300;
+                            Game1.player.Money -= 270;
                             Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create(mericola));
                         }
                         else

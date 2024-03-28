@@ -85,7 +85,7 @@ namespace NuclearBombLocations
             harmony.Patch(
              original: AccessTools.Method(typeof(StardewValley.Menus.CarpenterMenu), nameof(StardewValley.Menus.CarpenterMenu.returnToCarpentryMenuAfterSuccessfulBuild)),
              postfix: new HarmonyMethod(typeof(Mod), nameof(Mod.ReturnMenu_Prefix))
-          );
+          ); 
 
             harmony.Patch(
            original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.isAdoptionSpouse)),
@@ -143,7 +143,7 @@ namespace NuclearBombLocations
 
 
 
-
+        
         private static void ReturnMenu_Prefix()
         {
             // Not our place, we don't care
@@ -161,7 +161,7 @@ namespace NuclearBombLocations
                     Game1.player.viewingLocation.Value = null;
                     Game1.viewportFreeze = false;
                     Game1.viewport.Location = new Location(320, 1536);
-                    // __instance.freeze = true;                                   will need reflection, is private
+                    Game1.player.freeze = true;                                 
                     Game1.displayFarmer = true;
                     AnabelleConstructionMessage();
                 };
@@ -374,17 +374,7 @@ namespace NuclearBombLocations
                 Game1.ambientLight = new Color(210, 40, 0) * 120;
                 Game1.player.stamina -= 97;
             }
-
-            
-
-
-
-
-
         }
-
-
-
         private void OnUpdateTicked(object sender, EventArgs e)
         {
 
@@ -409,10 +399,7 @@ namespace NuclearBombLocations
                 e.Cancel = true;
 
             }
-
-
-          
-           
+       
         }
 
         public void OnWarped(object sender, WarpedEventArgs e)
@@ -431,12 +418,7 @@ namespace NuclearBombLocations
 
 
             }
-
-
         }
-
-
-
     }
-    }
+}
 
