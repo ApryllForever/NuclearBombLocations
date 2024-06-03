@@ -1031,7 +1031,7 @@ namespace NuclearBombLocations
                 case 958:
                 case 1080:
                 case 1081:
-                    base.ShowMineCartMenu("Default","Custom_ClairabelleLagoon");
+                    base.ShowMineCartMenu("Default","Clairabelle");
                     return true;
             }
 			if (Game1.player.eventsSeen.Contains("NuclearMarisol14Heart"))
